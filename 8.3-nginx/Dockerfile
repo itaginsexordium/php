@@ -16,7 +16,7 @@ ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
     PHP_ERROR_REPORTING="22527" \
     PHP_MEMORY_LIMIT="256M" \
     PHP_MAX_EXECUTION_TIME="99" \
-    PHP_OPEN_BASEDIR="${WEBUSER_HOME}:/dev/stdout:/tmp" \
+    PHP_OPEN_BASEDIR="${WEBUSER_HOME}:/dev/stdout:/tmp:/var/www" \
     PHP_POST_MAX_SIZE="100M" \
     PHP_UPLOAD_MAX_FILE_SIZE="100M" \
     PHP_POOL_NAME="www" \
@@ -97,7 +97,7 @@ RUN apk add -U --no-cache \
     && rm -rf /etc/nginx/conf.d/* /etc/php83/php-fpm.d/* /var/www/html/*
 
 COPY --chmod=755 rootfs/etc /etc
-COPY --chown=webuser:webgroup www-root /var/www/html
+COPY --chown=webuser:webgroup www-root /var/www
 
 USER webuser
 WORKDIR ${WEBUSER_HOME}
