@@ -9,8 +9,8 @@ all: build start test-main test-dev stop clean
 
 build:
 	if [ "$(TAG)" = "UNDEF" ]; then echo "Please provide a valid TAG" && exit 1; fi
-	docker build --no-cache --pull -t $(PROJECTNAME):$(TAG) -f $(TAG)/Dockerfile --target main $(TAG)
-	docker build --no-cache --pull -t $(PROJECTNAME):$(TAG)-dev -f $(TAG)/Dockerfile --target dev $(TAG)
+	docker build --no-cache --push -t $(PROJECTNAME):$(TAG) -f $(TAG)/Dockerfile --target main $(TAG)
+	docker build --no-cache --push -t $(PROJECTNAME):$(TAG)-dev -f $(TAG)/Dockerfile --target dev $(TAG)
 
 buildx-and-push:
 	docker buildx create --use

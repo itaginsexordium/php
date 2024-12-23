@@ -8,6 +8,8 @@ ARG WAIT_FOR_VERSION=v2.2.4 \
     PUID=9999 \
     WEBUSER_HOME="/var/www/html"
 
+
+
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
     S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0 \
     PHP_DATE_TIMEZONE="UTC" \
@@ -107,18 +109,26 @@ EXPOSE 80
 #  +----------------------------------------------------------+
 #  | Dev image                                                |
 #  +----------------------------------------------------------+
+
+
+FROM node:23.5-alpine AS node
+
 FROM main as dev
 
 ARG COMPOSER_VERSION=2.5.7
 
 USER root
 
+COPY --from=node /usr/lib /usr/lib
+COPY --from=node /usr/local/lib /usr/local/lib
+COPY --from=node /usr/local/include /usr/local/include
+COPY --from=node /usr/local/bin /usr/local/bin
+
 RUN apk -U upgrade && apk add --no-cache \
-    nodejs-current \
     yarn \
     # php83-xdebug \
     # Download composer.
-    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION}
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION} 
 
 COPY --chmod=755 devfs/etc /etc
 
