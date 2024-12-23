@@ -114,7 +114,7 @@ ARG COMPOSER_VERSION=2.5.7
 USER root
 
 RUN apk -U upgrade && apk add --no-cache \
-    nodejs \
+    nodejs-current \
     yarn \
     # php83-xdebug \
     # Download composer.
